@@ -16,28 +16,224 @@
         attack: [15, 25, 20, 20]
     };
 
-    let robotmaster;
-    let character;
-    let comp;
-    let characterName;
-    let compName;
-    let characterAttack;
-    let characterHP;
-    let characterHPTotal;
-    let compAttack;
-    let compHP;
-    let compHPTotal;
-    let characterPercentage;
-    let compPercentage;
-    let characterHPText;
-    let compHPText;
-    let battleTimes;
+    var robotmaster;
+    var character;
+    var comp;
+    var characterName;
+    var compName;
+    var characterAttack;
+    var characterHP;
+    var characterHPTotal;
+    var compAttack;
+    var compHP;
+    var compHPTotal;
+    var characterPercentage;
+    var compPercentage;
+    var characterHPText;
+    var compHPText;
+    var battleTimes;
 
     start();
 
     function start() {
         battleTimes = 0;
+    
+
+    var div = $('<div>');
+    $('.position-characters').append(div);
+
+    for (var i=0;
+    i < objRobotMaster.robotmaster.length; i++) {
+        var robotmasterHolder = $('<div>');
+        robotmasterHolder.addClass
+        ('characters-robotmaster');
+        robotmasterHolder.attr('type', objRobotMaster.robotmaster[i]);
+        robotmasterHolder.attr('hp', objRobotMaster.hp[i]);
+        robotmasterHolder.attr('attack', objRobotMaster.attack[i]);
+        robotmasterHolder.append('<img src="assests/images' + objRobotMaster.robotmaster[i] + '.png"/>');
+
+        var level = $('<h6>');
+        level.text('Lv10');
+        robotmasterHolder.append(level); 
+
+        var hp = $('<h6>');
+        hp.text('HP')
+
+        var colorHelper = $('div');
+        colorHelper.addClass
+        ('hp-bar-color-helper');
+
+        var hpBar = $('<div>');
+        hpBar.addClass('hp-bar');
+
+        var color = $('div');
+        color.addClass('hp-bar-color');
+
+        hpBar.append(colorHelper);
+        hpBar.append(hp);
+        hpBar.append(color);
+
+        robotmasterHolder.append(hpBar);
+
+        var numberHP = $('<h6>');
+        numberHP.text(objRobotMaster.hp[i] + ' / ' + objRobotMaster.hp[i]);
+        robotmasterHolder.append(numberHP);
+        
+        $('.characters').append
+        (robotmasterHolder);
     }
+    var h1 = $('<h1>');
+    h1.text('Select your Character');
+    $('.characters').append(h1);
+}
+
+$('.position-characters').on('click', '.characters-robotmaster', function() {
+ $('.characters h1').remove();
+
+ var selected = $('<div>');
+ selected.addClass('selected-character');
+
+ var unselected = $('<div>');
+ unselected.addClass('unselected-characters');
+
+ $('.position-characters').append(selected);
+
+ $('.position-characters').append(unselected);
+
+$('.characters').children().removeClass('characters-robotmaster');
+character = $(this);
+selected.append(character);
+
+if (character.attr('type') == 'Rock' || character.attr('type') == 'Blues' || character.attr('type') == 'Bass' || character.attr('type') == 'Cutman') {
+    character.children("img").addClass('flipped');
+}
+
+var otherRobotMaster = $(".characters").children();
+unselected.append(otherRobotMaster);
+
+$('.position-characters .chracters').remove();
+selected.children().addClass('selected-character-robotmaster');
+unselected.children().addClass('unselected-character-robotmaster');
+
+$('.unselected-character-robotmaster').each(function() {
+    var robotmaster = $(this);
+    if (robotmaster.attr('type') == 'Rock' || character.attr('type') == 'Blues' || character.attr('type') == 'Bass' || character.attr('type') == 'Cutman') {
+        robotmaster.children("img").addClass('flipped')
+}  
+});
+
+selected.append('<h1>Your Character</h1>');
+selected.last
+unselected.append('<h1>Choose Your Opponent</h1>');
+});
+
+$('.position-characters').on('click', '.unselected-character-pokemon', function() {
+    $('.selected-character h1').remove();
+    $('.unselected-characters h1').remove();
+
+    var sidelines = $('<div>');
+        sidelines.addClass('sidelines');
+
+    var battlefield = $('<div>');
+        battlefield.addClass('battlefield');
+
+    $('.position-characters').append(sidelines);
+    $('.position-characters').append(battlefield);
+
+    $('.selected-character').children().removeClass('selected-character-robotmaster');
+    $('.unselected-character').children().removeClass('unselected-character-robotmaster');
+
+    character = $(".selected-character").children();
+    enemy = $(this);
+    battlefield.append(character);
+    battlefield.append(enemy);
+
+    var otherRobotMaster = $(".unselected-characters").children();
+    sidelines.append(otherRobotMaster);
+
+    $('.position-characters .selected-character').remove();
+    $('.position-characters .unselected-character').remove();
+
+    battlefield.children().addClass('battle-robotMaster');
+    sidelines.children().addClass('sideline-robotMaster');
+
+    var h2 = $('<h2>');
+    battle();
+});
+
+var count = 0;
+function battle() {
+    $('.position-characters').off('click', '.sideline-robotMaster');
+    if (battleTimes == 0) {
+        characterHPTotal = $('.battle-robotmaster:eq(0)').attr('hp');
+        characterHP = characterHPTotal;
+        characterAttack = Number($('.battle-robotmaster:eq(0)').attr('attack'));
+        originalCharacterAttack = characterAttack;
+    }
+    count = 0;
+    clickBattle();
+    battleTimes++;
+}
+
+function clickBattle() {
+    $('.position-characters').on('click', 'battle-pokemon:eq(1)', function() {
+        $('.position-characters').off('click', '.battle-pokemon:eq(1)');
+        $('.battlefield h2').remove();
+        $('.battlefield h3').remove();
+
+        if (count == 0) {
+            characterName = $('.battle-robotMaster:eq(0)').attr('type');
+            compName = $('.battle-robotMaster:eq(1)').attr('type');
+            compAttack = $('.battle-robotMaster:eq(1)').attr('attack');
+            compHPTotal = $('.battle-robotMaster:eq(1)').attr('hp');
+            compHP = compHPTotal;
+            characterHPText = $('.battle-robotmaster:eq(0)').children('h6:eq(1)');
+            compHPText = $('.battle-robotmaster:eq(1)').children('h6:eq(1)');
+        }
+
+        var yourAttackMessage = $('<h3>');
+        var compAttackMessage = $('<h3>');
+
+        $('.battlefield').append(yourAttackMessage);
+        $('.battlefield').append(compAttackMessage);
+
+        if (characterHP != 0) {
+            compHP -= characterAttack;
+                compPercentage = 86 * compHP/compHPTotal;
+
+                if (compHP <= 0) {
+                    $('.position-characters').off('click', '.battle-robotMaster:eq(1)');
+                    compHP = 0;
+                    compPercentage = 0;
+
+                    $('.battlefield').css('z-index', '-1');
+                    window.setTimeout(function() {
+                        defeated('enemy', 1,0,1);
+                    }, 1000);
+                }
+        }
+    $('.battle-robotMaster:eq(0)').addClass('.animation-enemy');
+    $('.battle-robotMaster:eq(1)').one('webkitAnimationEnd oAnimationEnd msAnimationEnd animationEnd', 
+    
+    function(e) {
+        $('.battle-robotMaster:eq(1)').removeClass('animation-enemy');
+            $('battle-robotMaster:eq(0)) .hp-bar-color').css('width', String(
+                characterPercentage) + '%');
+            
+        if (characterPercentage <= 20) {
+            $('.battle-robotMaster:eq(0) .hp-bar-color').css('background', 'red');
+        } else if (characterPercentage <= 50) {
+            $('.battle-robotMaster:eq(0) .hp-bar-color').css('background', 'yellow');
+        }
+        characterHPText.text(characterHP + ' / ' + characterHPTotal);
+        enemyAttackMessage.html(compName + ' attacked you for <span style="color:red">' + compAttack + '</span> damage')
+
+        clickBattle()
+    })
+
+    })
+
+}
 
 
     </script>
